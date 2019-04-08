@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.MediaPlayer;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.TextView;
 
 public class Compass extends AppCompatActivity implements SensorEventListener {
 
-    ImageView compass_img;
+    ImageView needle_img;
     TextView txt_compass;
     int mAzimuth;
     private SensorManager mSensorManager;
@@ -25,6 +26,8 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
     private float[] mLastMagnetometer = new float[3];
     private boolean mLastAccelerometerSet = false;
     private boolean mLastMagnetometerSet = false;
+    MediaPlayer mp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +35,10 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
         setContentView(R.layout.activity_compass);
 
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        compass_img = (ImageView) findViewById(R.id.img_compass);
+        needle_img = (ImageView) findViewById(R.id.img_needle);
         txt_compass = (TextView) findViewById(R.id.txt_azimuth);
+        mp = MediaPlayer.create(this, R.raw.pewpew);
+
 
         start();
     }
@@ -59,12 +64,14 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
         }
 
         mAzimuth = Math.round(mAzimuth);
-        compass_img.setRotation(-mAzimuth);
+        needle_img.setRotation(-mAzimuth);
 
         String where = "NW";
 
-        if (mAzimuth >= 350 || mAzimuth <= 10)
+        if (mAzimuth >= 350 || mAzimuth <= 10) {
+            mp.start();
             where = "N";
+        }
         if (mAzimuth < 350 && mAzimuth > 280)
             where = "NW";
         if (mAzimuth <= 280 && mAzimuth > 260)

@@ -12,6 +12,12 @@ import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+// All the code is from the guide "How-to create a Compass App", i.e. the guide which can be found
+// on the course website, except the mediaplayer and all the code which handles the audio file
+// that is played when the compass references a specific value. I also made my own compass needle instead
+// of using a image from google etc.
+
+
 public class Compass extends AppCompatActivity implements SensorEventListener {
 
     ImageView needle_img;
@@ -37,8 +43,10 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
         mSensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         needle_img = (ImageView) findViewById(R.id.img_needle);
         txt_compass = (TextView) findViewById(R.id.txt_azimuth);
-        mp = MediaPlayer.create(this, R.raw.pewpew);
 
+        // Mediaplayer in order to play an audio file on a specific event
+
+        mp = MediaPlayer.create(this, R.raw.pewpew);
 
         start();
     }
@@ -68,7 +76,12 @@ public class Compass extends AppCompatActivity implements SensorEventListener {
 
         String where = "NW";
 
+
+
         if (mAzimuth >= 350 || mAzimuth <= 10) {
+
+            // Play the audio file
+
             mp.start();
             where = "N";
         }
